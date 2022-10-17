@@ -1,0 +1,111 @@
+<Window x:Name="window" x:Class="Manager.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Manager" 
+        xmlns:Interactivity="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:viewmodel="clr-namespace:Manager.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"        
+        xmlns:loc="clr-namespace:Manager.MyControl"         
+        mc:Ignorable="d"
+        d:DesignHeight="1050" d:DesignWidth="1300"
+        Title="Менеджмент"  WindowStartupLocation="CenterScreen" Width="{Binding UserWidth}" Height="{Binding UserHeight}"
+        WindowState="Maximized" >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resource/Dictionaries/StartRes.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="Brown">
+        <Grid Background="Gray" Margin="5"  >
+            <!--Стартовое окно-->
+            <Grid Visibility="{Binding StartWindowVisible}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.5*" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="34">Деловая игра "Менеджмент"</TextBlock>
+                <Button Style="{StaticResource StartMenuButton}" Grid.Row="1" Command="{Binding NewCommand}">Новая игра</Button>
+                <Button Style="{StaticResource StartMenuButton}" Grid.Row="2" Command="{Binding LoadGameCommand}">Загрузить игру</Button>
+                <Button Style="{StaticResource StartMenuButton}" Grid.Row="3" Command="{Binding SaveGameCommand}">Сохранить игру</Button>
+                <Button Style="{StaticResource StartMenuButton}" Grid.Row="4" Command="{Binding CloseCommand}">Сетевая игра</Button>
+                <Button Style="{StaticResource StartMenuButton}" Grid.Row="5" Command="{Binding CloseCommand}">Выход</Button>
+
+            </Grid>
+            <!--Основное поле игры-->
+            <Grid Visibility="{Binding MainWindowVisible}"  Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF1C1A50" Offset="0.096"/>
+                                <GradientStop Color="#FF228C85" Offset="0.504"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="105"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <!--Меню игры.-->
+                        <Menu IsMainMenu="True" BorderBrush="#FF2841C8" BorderThickness="5" Height="auto">
+                            <Menu.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#FF1C1A50" Offset="0.248"/>
+                                    <GradientStop Color="#FF228C85" Offset="0.917"/>
+                                </LinearGradientBrush>
+                            </Menu.Background>
+                            <MenuItem Header="Меню" FontSize="30" FontStyle="Italic" FontWeight="Bold" Foreground="#FF50C3C0">
+                                <MenuItem Header="Новая игра" Command="{Binding NewCommand}" InputGestureText="Ctrl+Shift+N"/>
+                                <MenuItem Header="Загрузить" Command="{Binding LoadGameCommand}" InputGestureText="Ctrl+Shift+V"/>
+                                <MenuItem Header="Сохранить" Command="{Binding SaveGameCommand}" InputGestureText="Ctrl+Shift+C"/>
+                                <MenuItem Header="Статистика"/>
+                                <Separator/>
+                                <MenuItem Header="Выход" Command="{Binding CloseCommand}" InputGestureText="Alt+F4"/>
+                            </MenuItem>
+                        </Menu>
+                        <Label Grid.Column="1" Content="Деловая игра менеджмент" FontSize="30" FontWeight="Bold" FontStyle="Italic" 
+                               Foreground="#FF391BCE" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <!--Разметка поля карточек игроков-->
+                    <Grid Grid.Row="1"  Height="Auto" Background="Green">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <!--Карточка игрока-бота-->
+                        <loc:PlayerCard1 DataContext="{Binding BankViewModel.PlayerPool.PlayerCards[0]}"  Grid.Row="0" Grid.Column="1" 
+                                         VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                        <!--Карточка игрока-бота-->
+                        <loc:PlayerCard1 Grid.Row="1" Grid.Column="0"  DataContext="{Binding BankViewModel.PlayerPool.PlayerCards[1]}" 
+                                         VerticalAlignment="Center"/>
+                        <!--Окно банка-->
+                        <loc:BankWindow Grid.Row="1" Grid.Column="1" DataContext="{Binding BankViewModel}" VerticalAlignment="Center"/>
+                        <!--Карточка игрока-бота-->
+                        <loc:PlayerCard1 Grid.Row="1" Grid.Column="2" DataContext="{Binding BankViewModel.PlayerPool.PlayerCards[2]}" 
+                                         VerticalAlignment="Center"/>
+                        <!--Карточка пользователя-->
+                        <loc:PlayerCard1 Grid.Row="2" Grid.Column="1" DataContext="{Binding BankViewModel.PlayerPool.PlayerCards[3]}" 
+                                         VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
